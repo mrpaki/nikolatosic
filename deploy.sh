@@ -5,7 +5,7 @@ REPO="https://github.com/mrpaki/nikolatosic.git"
 TMP="/tmp/nikolatosic-deploy"
 
 echo "▶ Build..."
-npm run build
+NEXT_PUBLIC_BASE_PATH=/nikolatosic npm run build
 
 echo "▶ Priprema deploy foldera..."
 rm -rf "$TMP"
