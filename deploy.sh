@@ -1,25 +1,21 @@
 #!/usr/bin/env bash
 set -e
 
-REPO="https://github.com/mrpaki/nikolatosic.git"
-TMP="/tmp/nikolatosic-deploy"
+REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
 
 echo "▶ Build..."
+cd "$REPO_ROOT"
 NEXT_PUBLIC_BASE_PATH=/nikolatosic npm run build
 
-echo "▶ Priprema deploy foldera..."
-rm -rf "$TMP"
-cp -r out/ "$TMP"
-touch "$TMP/.nojekyll"
+echo "▶ Kopiranje u docs/..."
+rm -rf docs
+cp -r out/ docs
+touch docs/.nojekyll
 
-echo "▶ Push na gh-pages..."
-cd "$TMP"
-git init -q
-git checkout -b gh-pages
-git add .
-git commit -q -m "Deploy: $(date '+%Y-%m-%d %H:%M')"
-git remote add origin "$REPO"
-git push -f origin gh-pages
+echo "▶ Commit i push na main..."
+git add docs/
+git commit -m "Deploy: $(date '+%Y-%m-%d %H:%M')"
+git push origin main
 
 echo ""
 echo "✓ Live: https://mrpaki.github.io/nikolatosic/"
